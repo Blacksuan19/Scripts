@@ -1,4 +1,4 @@
-# useful shell scripts written or modified by me 
+# some useful shell scripts 
 
 ### Jobs:
 
