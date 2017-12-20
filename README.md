@@ -1,6 +1,6 @@
 # useful shell scripts written or modified by me 
 
-## Jobs:
+### Jobs:
 
 - chroot: allow user to chroot to a specific partition .
 - colors: list terminal colors (copied form somewhere).
