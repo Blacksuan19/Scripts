@@ -1,6 +1,6 @@
 #!/bin/bash
 # written by madkita.
-printf "arch chroot script\n"
+printf "Manjaro chroot script\n"
 sleep 1
 # check if the script is being run as root or not.
 if [[ $EUID -ne 0 ]]; then
@@ -17,9 +17,10 @@ sleep 2
 mount /dev/"$root" /mnt
 echo "mounting special directories:"
 sleep 2
-mount -t proc proc /mnt/proc/
-mount --rbind /sys /mnt/sys/
-mount --rbind /dev /mnt/dev/
+mount -t proc proc /mnt/proc
+mount -t sysfs sys /mnt/sys
+mount -o bind /dev /mnt/dev
+mount -t devpts pts /mnt/dev/pts/
 echo "chrooting into $root"
 sleep 2
 chroot /mnt
