@@ -3,6 +3,7 @@
 ARCH=$(uname -m)
 OS=$(hostnamectl|awk '{$1=$3="";sub(/^[ \t]+/, "")}NR==7')
 HOST=$(hostnamectl|awk '{$1=$2="";sub(/^[ \t]+/, "")}NR==1')
+DISTRO=$(lsb_release -sirc | awk '{sub("Linux","");print $1 " " $3}')
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}')
 UPTIME=$(awk '{printf("%dd %02dh %02dm",($1/60/60/24),($1/60/60%24),($1/60%60))}' /proc/uptime)
 MODEL=$(cat /sys/devices/virtual/dmi/id/board_{name,vendor} | awk '!(NR%2){print$1,p}{p=$0}')
@@ -27,6 +28,7 @@ clear # clear the screen first before processing output.
  echo "   --------------------"
  echo  ""
  echo -e "\\e[94m     \\e[39m$MODEL"
+ echo -e "\\e[94m     \\e[39m$DISTRO"
  echo -e "\\e[94m     \\e[39m$OS$ARCH"
  echo -e "\\e[94m     \\e[39m$KERNEL"
  echo -e "\\e[94m     \\e[39m$UPTIME"
