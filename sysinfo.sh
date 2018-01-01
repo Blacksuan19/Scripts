@@ -41,5 +41,5 @@ clear # clear the screen first before processing output.
  echo -e "\\e[94m     \\e[39m$BIRTH"
  echo -e "\\e[94m   --------------------"
  echo -e "\\e[94m     \\e[39m$Packages"
- echo -e "\\e[94m     \\e[39m$Playing"
+ echo -e "\\e[94m   ♬  \\e[39m$Playing"
  echo  ""
