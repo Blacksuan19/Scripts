@@ -37,7 +37,7 @@ clear # clear the screen first before processing output.
  echo -e "\\e[94m     \\e[39m$GPU" 
  echo -e "\\e[94m     \\e[39m"$MEMORY"G Free" 
  echo -e "\\e[94m   --------------------"
- echo -e "\\e[94m     \\e[39m$DE"
+ echo -e "\\e[94m     \\e[39mPlasma $DE"
  echo -e "\\e[94m     \\e[39m$BIRTH"
  echo -e "\\e[94m   --------------------"
  echo -e "\\e[94m     \\e[39m$Packages"
