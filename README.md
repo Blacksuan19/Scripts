@@ -9,3 +9,8 @@
 - memefetch: show if your system is a meme or not (kde version).
 - sysinfo: print system info in a nice way (without logo).
 - tty-solarized-dark: make your tty solarized (copied form somewhere)
+- Spotify: control a runinng spotify instance 
+
+### screenshot:
+
+![alt text](https://raw.githubusercontent.com/Madkita/Scripts/master/Screenshot_20180104_080620.png)
