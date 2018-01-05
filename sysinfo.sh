@@ -16,11 +16,21 @@ SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" 
 BIRTH=$(ls -alct /|sed '$!d'|awk '{print $7, $6, $8}')
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 # get currently playing song (spotify only).
+if pgrep -x "spotify" > /dev/null
+then
 Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
+else
+Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.juk /org/mpris/MediaPlayer2 \
+            org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
+            string:'Metadata' |\
+            awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+            awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
+fi
+
 clear # clear the screen first before processing output.
  echo  ""
  echo -e "\\e[91m   --------------------"
