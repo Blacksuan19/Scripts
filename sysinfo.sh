@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 # dark shell grave. 
 ARCH=$(uname -m)
 OS=$(hostnamectl | awk '{$1=$3="";sub(/^[ \t]+/, "")}NR==7')
@@ -12,7 +12,7 @@ CPU=$(awk < /proc/cpuinfo '/model name/{print $5}' | head -1)
 TEMP=$(cat /sys/class/hwmon/hwmon0/temp1_input | awk '{print $1 / 1000}')
 GPU=$(lspci | awk '/VGA/{print $11,$12,$13}' | tr -d '[]')
 MEMORY=$(cat /proc/meminfo | grep MemAvailable | awk '$2 { print substr($2/1000/1000,1,4)}')
-SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you user another shell change this accordingly.
+SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you use another shell change this accordingly.
 BIRTH=$(ls -alct /|sed '$!d'|awk '{print $7, $6, $8}')
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 # get currently playing song (spotify and juk only).
