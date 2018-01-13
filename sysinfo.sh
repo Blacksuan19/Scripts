@@ -39,10 +39,10 @@ clear # clear the screen first before processing output.
  echo "   SYSTEM INFORMATION"
  echo "   --------------------"
  echo  ""
- echo -e "\\e[94m     \\e[39m$MODEL"
+ echo -e "\\e[94m     \\e[39m$MODEL"
  echo -e "\\e[94m     \\e[39m$DISTRO"
  echo -e "\\e[94m     \\e[39m$OS$ARCH"
- echo -e "\\e[94m     \\e[39m$KERNEL"
+ echo -e "\\e[94m     \\e[39m$KERNEL"
  echo -e "\\e[94m     \\e[39m$UPTIME"
  echo -e "\\e[94m     \\e[39m$SHELL"
  echo -e "\\e[94m     \\e[39m$CPU [$TEMP.0°C]"
@@ -55,3 +55,4 @@ clear # clear the screen first before processing output.
  echo -e "\\e[94m     \\e[39m$Packages"
  echo -e "\\e[94m   $ICON  \\e[39m$Playing"
  echo  ""
+ 
