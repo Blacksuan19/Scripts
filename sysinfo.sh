@@ -15,7 +15,7 @@ MEMORY=$(cat /proc/meminfo | grep MemAvailable | awk '$2 { print substr($2/1000/
 SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you use another shell change this accordingly.
 BIRTH=$(ls -alct /|sed '$!d'|awk '{print $7, $6, $8}')
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
-# get currently playing song (spotify and juk only).
+# get currently playing song (spotify and clementine only).
 if pgrep -x "spotify" > /dev/null
 then
 Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
