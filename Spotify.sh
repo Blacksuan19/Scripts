@@ -187,6 +187,7 @@ function sp-help {
   echo "  sp current    - Format the currently playing track"
   echo "  sp metadata   - Dump the current track's metadata"
   echo "  sp eval       - Return the metadata as a shell script"
+  echo "  sp lyrics     - Print song lyrics if found"
   echo ""
   echo "  sp art        - Print the URL to the current track's album artwork"
   echo "  sp display    - Display the current album artwork with \`display\`"
@@ -205,6 +206,10 @@ function sp-help {
   echo "Any other argument will start a search (i.e. 'sp foo' will search for foo)."
 }
 
+function sp-lyrics {
+  # uses a script to search or lyrics. 
+  sh ~/.lyrics spotify
+}
 function sp-search {
   # Searches for tracks, plays the first result.
 
