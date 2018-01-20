@@ -10,6 +10,7 @@
 - sysinfo: print system info in a nice way (without logo).
 - tty-solarized-dark: make your tty solarized (copied form somewhere)
 - Spotify: control a runinng spotify instance 
+- lyrics: show lyrics of spotify playing songs and other players (credit to @nick-parry)
 
 ### screenshot:
 
