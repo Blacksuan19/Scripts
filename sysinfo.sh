@@ -15,6 +15,8 @@ MEMORY=$(cat /proc/meminfo | grep MemAvailable | awk '$2 { print substr($2/1000/
 SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you use another shell change this accordingly.
 BIRTH=$(ls -alct /|sed '$!d'|awk '{print $7, $6, $8}')
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
+ICONS=$(cat .kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
+COLORS=$(cat .kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
 # get currently playing song (spotify and juk only).
 if pgrep -x "spotify" > /dev/null
 then
@@ -23,7 +25,7 @@ then
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
-	ICON=$(echo )
+	m_ICON=$(echo )
 else if pgrep -x "juk" > /dev/null
 then
 	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.juk /org/mpris/MediaPlayer2 \
@@ -31,10 +33,10 @@ then
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
-	ICON=$(echo ♬)
+	m_ICON=$(echo )
 else 
 	Playing=$(echo "No Supported Player Is Running")
-	ICON=$(echo ♬)
+	m_ICON=$(echo )
 fi
 fi
 
@@ -44,19 +46,22 @@ clear # clear the screen first before processing output.
  echo "   SYSTEM INFORMATION"
  echo "   --------------------"
  echo  ""
- echo -e "\\e[94m   𨀣 \\e[39m$MODEL"
- echo -e "\\e[94m   ⚙  \\e[39m$DISTRO"
+ echo -e "\\e[94m     \\e[39m$MODEL"
+ echo -e "\\e[94m     \\e[39m$DISTRO"
  echo -e "\\e[94m     \\e[39m$OS$ARCH"
- echo -e "\\e[94m     \\e[39m$KERNEL"
- echo -e "\\e[94m   ⏲  \\e[39m$UPTIME"
- echo -e "\\e[94m     \\e[39m$SHELL"
- echo -e "\\e[94m   ☢  \\e[39m$CPU [$TEMP.0°C]"
+ echo -e "\\e[94m     \\e[39m$KERNEL"
+ echo -e "\\e[94m     \\e[39m$UPTIME"
+ echo -e "\\e[94m     \\e[39m$SHELL"
+ echo -e "\\e[94m     \\e[39m$CPU [$TEMP.0°C]"
  echo -e "\\e[94m     \\e[39m$GPU" 
  echo -e "\\e[94m     \\e[39m"$MEMORY"G Free" 
  echo -e "\\e[94m   --------------------"
  echo -e "\\e[94m     \\e[39mPlasma $DE"
+ echo -e "\\e[94m     \\e[39m$ICONS "
+ echo -e "\\e[94m     \\e[39m$COLORS "Scheme""
  echo -e "\\e[94m     \\e[39m$BIRTH"
  echo -e "\\e[94m   --------------------"
  echo -e "\\e[94m     \\e[39m$Packages"
- echo -e "\\e[94m   $ICON  \\e[39m$Playing"
+ echo -e "\\e[94m   $m_ICON  \\e[39m$Playing"
  echo  ""
+ 
