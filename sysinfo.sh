@@ -15,8 +15,8 @@ MEMORY=$(cat /proc/meminfo | grep MemAvailable | awk '$2 { print substr($2/1000/
 SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you use another shell change this accordingly.
 BIRTH=$(ls -alct /|sed '$!d'|awk '{print $7, $6, $8}')
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
-ICONS=$(cat .kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
-COLORS=$(cat .kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
+ICONS=$(cat ~/.kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
+COLORS=$(cat ~/.kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
 # get currently playing song (spotify and juk only).
 if pgrep -x "spotify" > /dev/null
 then
