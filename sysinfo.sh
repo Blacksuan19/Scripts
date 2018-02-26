@@ -13,7 +13,7 @@ TEMP=$(cat /sys/class/hwmon/hwmon0/temp1_input | awk '{print $1 / 1000}')
 GPU=$(lspci | awk '/VGA/{print $11,$12,$13}' | tr -d '[]')
 MEMORY=$(cat /proc/meminfo | grep MemAvailable | awk '$2 { print substr($2/1000/1000,1,4)}')
 SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you use another shell change this accordingly.
-BIRTH=$(ls -alct /|sed '$!d'|awk '{print $7, $6, $8}')
+BIRTH=$(ls -alct --full-time /etc | tail | sed '$!d' | awk '{print $6}')
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 ICONS=$(cat ~/.kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
 COLORS=$(cat ~/.kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
