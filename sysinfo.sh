@@ -18,19 +18,24 @@ Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 # get currently playing song (spotify and juk only).
 if pgrep -x "spotify" > /dev/null
 then
-Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
-ICON=$(echo )
-else
-Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.juk /org/mpris/MediaPlayer2 \
+	ICON=$(echo )
+else if pgrep -x "juk" > /dev/null
+then
+	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.juk /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
-ICON=$(echo ♬)
+	ICON=$(echo ♬)
+else 
+	Playing=$(echo "No Supported Player Is Running")
+	ICON=$(echo ♬)
+fi
 fi
 
 clear # clear the screen first before processing output.
