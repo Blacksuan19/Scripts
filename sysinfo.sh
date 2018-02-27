@@ -7,7 +7,7 @@ DISTRO=$(lsb_release -sirc | awk '{print $3 " " $2}')
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}')
 UPTIME=$(awk '{printf("%dd %02dh %02dm",($1/60/60/24),($1/60/60%24),($1/60%60))}' /proc/uptime)
 MODEL=$(cat /sys/devices/virtual/dmi/id/board_{name,vendor} | awk '!(NR%2){print$1,p}{p=$0}')
-DE=$(plasmashell --version | awk '{print $2-.0}') # i use kde plasma, feel free to change this according to your DE/WM.
+DE=$(plasmashell --version | awk '{print $2}') # i use kde plasma, feel free to change this according to your DE/WM.
 CPU=$(awk < /proc/cpuinfo '/model name/{print $5}' | head -1)
 TEMP=$(cat /sys/class/hwmon/hwmon0/temp1_input | awk '{print $1 / 1000}')
 GPU=$(lspci | awk '/VGA/{print $11,$12,$13}' | tr -d '[]')
