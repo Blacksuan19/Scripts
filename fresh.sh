@@ -19,7 +19,7 @@ EOT
 echo "switching to unstable branch (this might take a while)..."
 sleep 2
 # switch to the unstable branch.
-sudo pacman-mirrors -b unstable
+sudo pacman-mirrors -aB unstable
 echo "updating new databases..."
 sleep 2
 # update the databases.
