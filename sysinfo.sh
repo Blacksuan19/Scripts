@@ -33,7 +33,7 @@ then
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
-	m_ICON=$(echo )
+	m_ICON=$(echo ♬)
 else 
 	Playing=$(echo "No Supported Player Is Running")
 	m_ICON=$(echo )
