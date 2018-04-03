@@ -16,7 +16,7 @@ SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" 
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 ICONS=$(cat ~/.kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
 COLORS=$(cat ~/.kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
-FONT=$(cat ~/.kde4/share/config/kdeglobals | grep font | sed 's/font=//g' | sed 's/,8,-1,5,50,0,0,0,0,0,Medium//g' | sed 's/[][MACR]//g' | sed 's/Neue//g')
+FONT=$(cat ~/.kde4/share/config/kdeglobals | grep font | sed 's/font=//g' | sed 's/,8,-1,5,57,0,0,0,0,0,Medium//g')
 # get currently playing song (spotify and clementine only).
 if pgrep -x "spotify" > /dev/null
 then
@@ -42,9 +42,9 @@ fi
 
 clear # clear the screen first before processing output.
  echo  ""
- echo -e "\\e[91m   -----------------------"
- echo "     SYSTEM INFORMATION"
- echo "   -----------------------"
+ echo -e "\\e[91m   --------------------"
+ echo "   SYSTEM INFORMATION"
+ echo "   --------------------"
  echo  ""
  echo -e "\\e[94m     \\e[39m$MODEL"
  echo -e "\\e[94m     \\e[39m$DISTRO"
