@@ -17,7 +17,7 @@ Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 ICONS=$(cat ~/.kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
 COLORS=$(cat ~/.kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
 FONT=$(cat ~/.kde4/share/config/kdeglobals | grep font | sed 's/font=//g' | sed 's/,8,-1,5,57,0,0,0,0,0,Medium//g')
-# get currently playing song (spotify and clementine only).
+# get currently playing song (spotify and juk only).
 if pgrep -x "spotify" > /dev/null
 then
 	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
@@ -26,9 +26,9 @@ then
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
 	m_ICON=$(echo )
-else if pgrep -x "clementine" > /dev/null
+else if pgrep -x "juk" > /dev/null
 then
-	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.clementine /org/mpris/MediaPlayer2 \
+	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.juk /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
