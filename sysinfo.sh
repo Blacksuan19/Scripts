@@ -1,8 +1,6 @@
 #! /bin/sh
 # dark shell grave. 
-ARCH=$(uname -m | sed 's/x//g')
 OS=$(hostnamectl | awk '{$1=$3="";sub(/^[ \t]+/, "")}NR==7' | sed 's/System:  //g')
-HOST=$(hostnamectl | awk '{$1=$2="";sub(/^[ \t]+/, "")}NR==1')
 DISTRO=$(lsb_release -sirc | awk '{print $3 " " $2}')
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}')
 UPTIME=$(awk '{printf("%dd %02dh %02dm",($1/60/60/24),($1/60/60%24),($1/60%60))}' /proc/uptime)
@@ -36,7 +34,7 @@ then
 	m_ICON=$(echo ♬)
 else 
 	Playing=$(echo "No Supported Player Is Running")
-	m_ICON=$(echo )
+	m_ICON=$(echo Ⴃ)
 fi
 fi
 
@@ -47,21 +45,20 @@ clear # clear the screen first before processing output.
  echo "   --------------------"
  echo  ""
  echo -e "\\e[94m     \\e[39m$MODEL"
- echo -e "\\e[94m     \\e[39m$DISTRO"
- echo -e "\\e[94m     \\e[39m$OS" "$ARCH"
- echo -e "\\e[94m     \\e[39m$KERNEL"
- echo -e "\\e[94m     \\e[39m$UPTIME"
- echo -e "\\e[94m     \\e[39m$SHELL"
+ echo -e "\\e[94m   ❂  \\e[39m$DISTRO"
+ echo -e "\\e[94m     \\e[39m$OS$KERNEL"
+ echo -e "\\e[94m   ⋇  \\e[39m$UPTIME"
+ echo -e "\\e[94m   ⯄  \\e[39m$SHELL"
  echo -e "\\e[94m     \\e[39m$CPU [$TEMP.0°C]"
  echo -e "\\e[94m     \\e[39m$GPU" 
  echo -e "\\e[94m     \\e[39m"$MEMORY"G Free" 
  echo -e "\\e[94m   ---------------------"
- echo -e "\\e[94m     \\e[39mPlasma $DE"
- echo -e "\\e[94m   𝐅  \\e[39m$FONT" 
- echo -e "\\e[94m   ⬢  \\e[39m$ICONS "
- echo -e "\\e[94m     \\e[39m$COLORS "Light""
+ echo -e "\\e[94m   ♥  \\e[39mPlasma $DE"
+ echo -e "\\e[94m   𝐅  \\e[39m$FONT Font" 
+ echo -e "\\e[94m   ✱  \\e[39m$ICONS Icons"
+ echo -e "\\e[94m   ♟  \\e[39m$COLORS "Scheme""
  echo -e "\\e[94m   ---------------------"
- echo -e "\\e[94m     \\e[39m$Packages"
+ echo -e "\\e[94m   ይ  \\e[39m$Packages"
  echo -e "\\e[94m   $m_ICON  \\e[39m$Playing"
  echo  ""
  
