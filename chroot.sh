@@ -1,5 +1,5 @@
 #!/bin/bash
-# written by madkita.
+# written by blacksuan19.
 printf "Manjaro chroot script\n"
 sleep 1
 # check if the script is being run as root or not.
