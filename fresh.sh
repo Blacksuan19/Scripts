@@ -62,7 +62,7 @@ cp -
 git clone https://github.com/Blacksuan19/Scripts.git
 cd Scripts
 sudo cp Spotify.sh /bin/sp
-chmod +x /bin/sp
+sudo chmod +x /bin/sp
 cp Lyrics.sh $HOME/.lyrics
 cd -
 echo "Done setting up dotfiles"
