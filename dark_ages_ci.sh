@@ -30,7 +30,6 @@ function tg_sendinfo() {
 
 # Failed
 function Errored() {
-    tg_sendstick_failed
     tg_sendinfo "$(echo -e "Reep Build Failed, So Sad, Alexa Play Despacito...")"
     exit 1
 }
@@ -42,19 +41,11 @@ function tg_sendstick_start() {
          -d chat_id="-1001348786090" >> /dev/null
 }
 
-# Send A Sticker If Build Failed
-function tg_sendstick_failed() {
-    curl -s -X POST "https://api.telegram.org/bot$BOT_API_KEY/sendSticker" \
-         -d sticker="AAQEABMW5t4ZAASGmhflwYi77uULAAIC" \
-         -d chat_id="-1001348786090" >> /dev/null
-}
-
-
 
 # announce completion
 function fin() {
     tg_sendinfo "$(echo "YUS!! IT COMPILES!!")"
-    tg_sendinfo "$(echo "Compiled Successfully took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.")"
+    tg_sendinfo "$(echo "Compiled Successfully, took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.")"
 }
 
 
@@ -68,7 +59,7 @@ DATE=`date`
 BUILD_START=$(date +"%s")
 tg_sendinfo "Lets Get This Party started!!"
 tg_sendstick_start
-tg_sendinfo "New build started at $DATE with Dark Engine at commit $Commit/branch $Branch"
+tg_sendinfo "I'll now Compile with Dark Engine at $Commit in $Branch"
 
 export ARCH=arm64
 export SUBARCH=arm64
@@ -92,12 +83,18 @@ else
     cp $KERN_IMG $ZIP_DIR/kernel/Image.gz
     cp $DTB_T $ZIP_DIR/kernel/treble/msm8953-qrd-sku3-e7-treble.dtb
     cp $DTB $ZIP_DIR/kernel/normal/msm8953-qrd-sku3-e7-non-treble.dtb
-    make normal &>/dev/null
-    cd ..
     NAME=Dark-Ages
     DATE=$(date "+%d%m%Y-%I%M")
     CODE=Tercero-Mix
-    ZIP=${NAME}-${CODE}-${DATE}.zip
+    if [[ "$Branch" == "darky-oc" ]]; then
+        make oc &>/dev/null
+        ZIP=${NAME}-${CODE}-OC-${DATE}.zip
+    fi
+    if [[ "$Branch" != "darky-oc" ]]; then
+        make normal &>/dev/null
+        ZIP=${NAME}-${CODE}-${DATE}.zip
+    fi
+    cd ..
     push
     fin
 fi
