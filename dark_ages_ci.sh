@@ -48,11 +48,18 @@ function fin() {
     tg_sendinfo "$(echo "Compiled Successfully, took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.")"
 }
 
-
-git clone https://github.com/Blacksuan19/Toolchains -b opt-gnu-8.x toolchains/Toolchains
-sudo apt install bc
 Branch="$(git rev-parse --abbrev-ref HEAD)"
 Commit="$(git log --pretty=format:'%h : %s' -1)"
+
+if [[ "$Branch" == "darky-clang" ]]; then
+    git clone https://github.com/Blacksuan19/Toolchains -b dragonTC-8.0 toolchains/Toolchains
+fi
+
+if [[ "$Branch" != "darky-clang" ]]; then
+    git clone https://github.com/Blacksuan19/Toolchains -b opt-gnu-8.x toolchains/Toolchains
+fi
+sudo apt install bc
+
 
 # First-post works
 DATE=`date`
@@ -86,13 +93,13 @@ else
     NAME=Dark-Ages
     DATE=$(date "+%d%m%Y-%I%M")
     CODE=Tercero-Mix
-    if [[ "$Branch" == "darky-oc" ]]; then
-        make oc &>/dev/null
-        ZIP=${NAME}-${CODE}-OC-${DATE}.zip
+    if [[ "$Branch" == "darky-clang" ]]; then
+        make clang &>/dev/null
+        ZIP=${NAME}-${CODE}--${DATE}.zip
     fi
-    if [[ "$Branch" != "darky-oc" ]]; then
+    if [[ "$Branch" != "darky-clang" ]]; then
         make normal &>/dev/null
-        ZIP=${NAME}-${CODE}-${DATE}.zip
+        ZIP=${NAME}-${CODE}-clang-${DATE}.zip
     fi
     cd ..
     push
