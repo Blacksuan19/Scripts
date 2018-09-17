@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (C) 2018 Raphiel Rollerscaperers (raphielscape)
-#               2018 Rama Bondan Prakoso (rama982)
-#               2018 Abubakar Yagoub (Blacksuan19)
+# Copyright (C)       2018 Abubakar Yagoub (Blacksuan19)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
@@ -50,14 +48,7 @@ function fin() {
 
 Branch="$(git rev-parse --abbrev-ref HEAD)"
 Commit="$(git log --pretty=format:'%h : %s' -1)"
-
-if [[ "$Branch" == "darky-clang" ]]; then
-    git clone https://github.com/Blacksuan19/Toolchains -b dragonTC-8.0 toolchains/Toolchains
-fi
-
-if [[ "$Branch" != "darky-clang" ]]; then
-    git clone https://github.com/Blacksuan19/Toolchains -b opt-gnu-8.x toolchains/Toolchains
-fi
+git clone https://github.com/Blacksuan19/Toolchains -b opt-gnu-8.x toolchains/Toolchains
 sudo apt install bc
 
 
@@ -93,13 +84,13 @@ else
     NAME=Dark-Ages
     DATE=$(date "+%d%m%Y-%I%M")
     CODE=Tercero-Mix
-    if [[ "$Branch" == "darky-clang" ]]; then
-        make clang &>/dev/null
-        ZIP=${NAME}-${CODE}--${DATE}.zip
+    if [[ "$Branch" == "darky-eas" ]]; then
+        make eas &>/dev/null
+        ZIP=${NAME}-${CODE}-EAS-${DATE}.zip
     fi
-    if [[ "$Branch" != "darky-clang" ]]; then
+    if [[ "$Branch" != "darky-eas" ]]; then
         make normal &>/dev/null
-        ZIP=${NAME}-${CODE}-clang-${DATE}.zip
+        ZIP=${NAME}-${CODE}-${DATE}.zip
     fi
     cd ..
     push
