@@ -48,9 +48,15 @@ function fin() {
 
 Branch="$(git rev-parse --abbrev-ref HEAD)"
 Commit="$(git log --pretty=format:'%h : %s' -1)"
-git clone https://github.com/Blacksuan19/Toolchains -b opt-gnu-8.x toolchains/Toolchains
-sudo apt install bc
 
+if [[ "$Branch" == "darky-eas" ]]; then
+    git clone https://github.com/GrowtopiaJaw/aarch64-linux-android-4.9.git -b google toolchains/Toolchains
+fi
+
+if [[ "$Branch" != "darky-eas" ]]; then
+    git clone https://github.com/Blacksuan19/Toolchains -b opt-gnu-8.x toolchains/Toolchains
+fi
+sudo apt install bc
 
 # First-post works
 DATE=`date`
@@ -65,7 +71,12 @@ export KBUILD_BUILD_USER="Blacksuan19"
 export KBUILD_BUILD_HOST="Dark-Castle"
 CONFIG=vince_defconfig
 THREAD="-j8"
-export CROSS_COMPILE="$PWD/toolchains/Toolchains/bin/aarch64-opt-linux-android-"
+if [[ "$Branch" == "darky-eas" ]]; then
+    export CROSS_COMPILE="$PWD/toolchains/Toolchains/bin/aarch64-linux-android-"
+fi    
+if [[ "$Branch" != "darky-eas" ]]; then
+    export CROSS_COMPILE="$PWD/toolchains/Toolchains/bin/aarch64-opt-linux-android-"
+fi
 make  O=out $CONFIG $THREAD
 make  O=out $THREAD
 
@@ -83,7 +94,7 @@ else
     cp $DTB $ZIP_DIR/kernel/normal/msm8953-qrd-sku3-e7-non-treble.dtb
     NAME=Dark-Ages
     DATE=$(date "+%d%m%Y-%I%M")
-    CODE=Tercero-Mix
+    CODE=Cuarto
     if [[ "$Branch" == "darky-eas" ]]; then
         make eas &>/dev/null
         ZIP=${NAME}-${CODE}-EAS-${DATE}.zip
