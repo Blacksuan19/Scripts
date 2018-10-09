@@ -1,7 +1,7 @@
 #! /bin/sh
 # dark shell grave. 
 OS=$(hostnamectl | awk '{$1=$3="";sub(/^[ \t]+/, "")}NR==7' | sed 's/System:  //g')
-DISTRO=$(lsb_release -sirc | awk '{print $3 " " $2}')
+DISTRO=$(lsb_release -sirc | awk '{print $3 " " $2}'  | sed 's/-rc//g')
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}')
 UPTIME=$(awk '{printf("%dd %02dh %02dm",($1/60/60/24),($1/60/60%24),($1/60%60))}' /proc/uptime)
 MODEL=$(cat /sys/devices/virtual/dmi/id/board_{name,vendor} | awk '!(NR%2){print$1,p}{p=$0}')
@@ -15,6 +15,16 @@ Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 ICONS=$(cat ~/.kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
 COLORS=$(cat ~/.kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
 FONT=$(cat ~/.kde4/share/config/kdeglobals | grep font | sed 's/font=//g' | sed 's/,8,-1,5,57,0,0,0,0,0,Medium//g')
+WIDGET=$(cat ~/.kde4/share/config/kdeglobals | grep widgetStyle | sed 's/widgetStyle=//g')
+#get current terminal font (konsole and termite only)
+if pgrep -x "konsole" > /dev/null
+then
+	TERM_FONT=$(cat ~/.kde4/share/config/kdeglobals | grep fixed | sed 's/fixed=//g' | sed 's/,8,-1,5,50,0,0,0,0,0,Book//g') # change the sed according to your kdeglobals file the numbers dont always match
+else if pgrep -x "termite" > /dev/null
+then
+	TERM_FONT=$(cat ~/.config/termite/config| grep font | sed 's/font = //g')
+fi
+fi
 # get currently playing song (spotify and juk only).
 if pgrep -x "spotify" > /dev/null
 then
@@ -54,11 +64,13 @@ clear # clear the screen first before processing output.
  echo -e "\\e[94m   \\e[39m"$MEMORY"G Free" 
  echo -e "\\e[94m   ---------------------"
  echo -e "\\e[94m   \\e[39mPlasma $DE"
+ echo -e "\\e[94m   \\e[39m$WIDGET Style" 
  echo -e "\\e[94m   \\e[39m$FONT" 
-echo -e "\\e[94m   \\e[39m$ICONS Icons"
-echo -e "\\e[94m   \\e[39m$COLORS"
+ echo -e "\\e[94m   \\e[39m$TERM_FONT"
+ echo -e "\\e[94m   \\e[39m$ICONS Icons"
+ echo -e "\\e[94m   \\e[39m$COLORS"
+ echo -e "\\e[94m   \\e[39m$Packages Packages"
  echo -e "\\e[94m   ---------------------"
- echo -e "\\e[94m   \\e[39m$Packages"
  echo -e "\\e[94m   \\e[39m$Playing"
  echo  ""
  
