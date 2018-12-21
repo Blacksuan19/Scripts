@@ -1,5 +1,9 @@
 #! /bin/sh
 # dark shell grave. 
+# to rework
+#GPU, DE, replace cat with awk
+
+
 OS=$(hostnamectl | awk '{$1=$3="";sub(/^[ \t]+/, "")}NR==7' | sed 's/System:  //g')
 DISTRO=$(lsb_release -sirc | awk '{print $3 " " $2}'  | sed 's/-rc//g')
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}')
@@ -14,7 +18,7 @@ SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" 
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use arch then what??
 ICONS=$(cat ~/.kde4/share/config/kdeglobals | grep Theme | sed 's/Theme=//g')
 COLORS=$(cat ~/.kde4/share/config/kdeglobals | grep ColorScheme | sed 's/ColorScheme=//g')
-FONT=$(cat ~/.kde4/share/config/kdeglobals | grep font | sed 's/font=//g' | sed 's/,8,-1,5,57,0,0,0,0,0,Medium//g')
+FONT=$(cat ~/.kde4/share/config/kdeglobals | grep font | sed 's/font=//g' | sed 's/,7.6,-1,5,57,0,0,0,0,0,Medium//g')
 WIDGET=$(cat ~/.kde4/share/config/kdeglobals | grep widgetStyle | sed 's/widgetStyle=//g')
 #get current terminal font (konsole and termite only)
 if pgrep -x "konsole" > /dev/null
