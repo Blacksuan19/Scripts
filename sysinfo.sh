@@ -38,13 +38,13 @@ then
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
 	m_ICON=$(echo )
-else if pgrep -x "juk" > /dev/null
+else if pgrep -x "vlc" > /dev/null
 then
-	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.juk /org/mpris/MediaPlayer2 \
+	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.vlc /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-            awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
+            awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print  t}')
 	#m_ICON=$(echo ♬)
 else 
 	Playing=$(echo "No Supported Player Is Running")
