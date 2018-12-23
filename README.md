@@ -15,3 +15,8 @@
 ### screenshot:
 
 ![alt text](https://raw.githubusercontent.com/Madkita/Scripts/master/Screenshot_20180104_080620.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBlacksuan19%2FScripts.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FBlacksuan19%2FScripts?ref=badge_shield)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBlacksuan19%2FScripts.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FBlacksuan19%2FScripts?ref=badge_large)
