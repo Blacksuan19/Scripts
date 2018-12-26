@@ -17,10 +17,10 @@ SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" 
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use pacman then what??
 ICONS=$(awk <~/.kde4/share/config/kdeglobals '/Theme/{print $1}' | sed 's/Theme=//g; s/-icon-theme//g; s/[-]/ /g') # get plasma icons 
 COLORS=$(awk <~/.kde4/share/config/kdeglobals '/ColorScheme/{print $1}' | sed 's/ColorScheme=//g') # get plasma color scheme
-FONT=$(awk <~/.kde4/share/config/kdeglobals '/font/{print $1}' | sed 's/,7.5,-1,5,57,0,0,0,0,0,Medium//g; s/font=//g') # get plasma fonts
+FONT=$(awk <~/.kde4/share/config/kdeglobals '/font/{print $1}' | sed 's/,7.2,-1,5,57,0,0,0,0,0,Medium//g; s/font=//g') # get plasma fonts
 WIDGET=$(awk <~/.kde4/share/config/kdeglobals '/widgetStyle/{print $1}' | sed 's/widgetStyle=//g') # get plasma widgets
 TERM_FONT=$(awk <~/.local/share/konsole/Shell.profile '/Font=/{print $1}' | sed 's/,9,-1,5,50,0,0,0,0,0,Regular//g; s/Font=//g') #change profile name according to yours 
-# get currently playing song (spotify and juk only).
+# get currently playing song (spotify and vlc only).
 if pgrep -x "spotify" > /dev/null
 then
 	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
@@ -28,7 +28,6 @@ then
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}')
-	m_ICON=$(echo )
 else if pgrep -x "vlc" > /dev/null
 then
 	Playing=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.vlc /org/mpris/MediaPlayer2 \
@@ -36,12 +35,15 @@ then
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print  t}')
-	#m_ICON=$(echo ♬)
 else 
 	Playing=$(echo "No Supported Player Is Running")
-	#m_ICON=$(echo Ⴃ)
 fi
 fi
+
+# some color formatting
+bold=$(tput bold)
+normal=$(tput sgr0)
+GREY='\033[1;30m'
 
 clear # clear the screen first before processing output.
  echo  ""
@@ -49,23 +51,23 @@ clear # clear the screen first before processing output.
  echo "   SYSTEM INFORMATION"
  echo "   --------------------"
  echo  ""
- echo -e "\\e[94m   \\e[39m$VENDOR $MODEL"
- echo -e "\\e[94m   \\e[39m$DISTRO"
- echo -e "\\e[94m   \\e[39m$OS$KERNEL"
- echo -e "\\e[94m   \\e[39m$SHELL"
- echo -e "\\e[94m   \\e[39m$CPU [$TEMP.0°C]"
- echo -e "\\e[94m   \\e[39m$GPU" 
- echo -e "\\e[94m   \\e[39m"$MEMORY"G/"$MEMORY_TOTAL"G Free" 
-  echo -e "\\e[94m   \\e[39m"$ROOT" Free" 
- echo -e "\\e[94m   ---------------------"
- echo -e "\\e[94m   \\e[39mPlasma $DE"
- echo -e "\\e[94m   \\e[39m$WIDGET Style" 
- echo -e "\\e[94m   \\e[39m$FONT" 
- echo -e "\\e[94m   \\e[39m$TERM_FONT"
- echo -e "\\e[94m   \\e[39m$ICONS Icons"
- echo -e "\\e[94m   \\e[39m$COLORS"
- echo -e "\\e[94m   \\e[39m$Packages Packages"
- echo -e "\\e[94m   ---------------------"
- echo -e "\\e[94m   \\e[39m$Playing"
+ echo -e "\\e[94m   \\e[39m${GREY}Model:$normal $VENDOR $MODEL"
+ echo -e "\\e[94m   \\e[39m${GREY}Distro:$normal $DISTRO"
+ echo -e "\\e[94m   \\e[39m${GREY}Kernel:$normal $OS$KERNEL"
+ echo -e "\\e[94m   \\e[39m${GREY}Shell:$normal $SHELL"
+ echo -e "\\e[94m   \\e[39m${GREY}CPU:$normal $CPU [$TEMP.0°C]"
+ echo -e "\\e[94m   \\e[39m${GREY}GPU:$normal $GPU" 
+ echo -e "\\e[94m   \\e[39m${GREY}Memory:$normal "$MEMORY"G/"$MEMORY_TOTAL"G Free" 
+  echo -e "\\e[94m   \\e[39m${GREY}Root(/):$normal "$ROOT" Free" 
+ echo -e "\\e[94m ${bold}  ---------------------"
+ echo -e "\\e[94m   \\e[39m${GREY}DE:$normal Plasma $DE"
+ echo -e "\\e[94m   \\e[39m${GREY}Widget Style:$normal $WIDGET" 
+ echo -e "\\e[94m   \\e[39m${GREY}Font:$normal $FONT" 
+ echo -e "\\e[94m   \\e[39m${GREY}Terminal Font:$normal $TERM_FONT"
+ echo -e "\\e[94m   \\e[39m${GREY}Icons:$normal $ICONS"
+ echo -e "\\e[94m   \\e[39m${GREY}Colors:$normal $COLORS"
+ echo -e "\\e[94m   \\e[39m${GREY}Packages:$normal $Packages "
+ echo -e "\\e[94m ${bold}  ---------------------"
+ echo -e "\\e[94m   \\e[39m${GREY}Playing:$normal $Playing"
  echo  ""
  
