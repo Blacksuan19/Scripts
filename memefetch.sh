@@ -24,7 +24,7 @@ not_memed() {
 }
 
 # look for kwin
-check_kwin() {
+check_wm() {
     if exists kwin_x11 || kwin_wayland; then
         memed
     else
@@ -33,7 +33,7 @@ check_kwin() {
 }
 
 # look for kde plasma
-check_plasma() {
+check_de() {
    if exists plasmashell; then
            memed
 
@@ -42,56 +42,56 @@ check_plasma() {
    fi
 }
 
-# look for spotify
-check_spotify() {
-    if exists spotify; then
+# look for spotify or vlc
+check_player() {
+    if exists spotify || vlc; then
         memed
     else
         not_memed
     fi
 }
 
-# look for neofetch
+# look for neofetch and sysinfo script
 check_fetch() {
-   if exists neofetch; then
+   if exists neofetch || exists ls ~/.sysinfo.sh; then
        memed
    else
        not_memed
    fi
 }
 
-# look for urxt and termite
+# look for konsole
 check_term() {
-    if exists urxvt || exists termite; then
+    if exists konsole; then
         memed
     else
         not_memed
     fi
 }
 
-# look for plank
+# look for plank or latte
 check_dock() {
-    if exists plank; then
+    if exists plank || exists latte-dock; then
         memed
     else
         not_memed
     fi
 }
 
-# look for vivaldi or vivaldi-snapshot
-check_vivaldi() {
-    if exists vivaldi-snapshot || exists vivaldi; then
+
+check_browser() {
+    if exists vivaldi-snapshot || exists vivaldi || exists google-chrome-stable; then 
         memed
     else
         not_memed
     fi
 }
-# look for sublime
+# look for code 
 check_editor() {
-    if exists vim || exists /opt/sublime_text_3; then
-        not_memed
-    else
+    if exists vim ||  exists code; then
         memed
+    else
+        not_memed
     fi
 }
 
@@ -108,9 +108,9 @@ check_distro() {
     fi
 }
 
-# look for prezto
+# look for zsh
 check_shell() {
-    if [[ -d ${HOME}/.zprezto ]]; then
+    if exists zsh; then
         memed
     else
         not_memed
@@ -118,24 +118,20 @@ check_shell() {
 }
 
 # OUTPUT
-
+clear
 cat << EOF
 
-             me                         
-         mememememe                     
-       memememememem                    
-      emememememememe                   ${f1}fetch:${f7} $(check_fetch)
-     mememememememememememem            ${f1}editor:${f7} $(check_editor)
-    emememememememememe  memem          ${f1}de:${f7} $(check_plasma)
-   ememememememememememe   mememe       ${f1}term:${f7} $(check_term)
-  mememememe     mememem     ememe      ${f1}shell:${f7} $(check_shell)
-  memememe         mememe   mememe      ${f1}dock:${f7} $(check_dock)
- emememe            mememememememe      ${f1}browser:${f7} $(check_vivaldi)
- emememe           mememememememe       ${f1}distro:${f7} $(check_distro)
-mememem       ememememememememe         ${f1}wm:${f7} $(check_kwin)
-mememe    memememememememem             ${f1}spotify:${f7} $(check_spotify)
-emem ememememememem    emem
-memem                    em
- eme                     me
 
+                                ███╗   ███╗ █████╗ ███╗   ██╗     ██╗ █████╗ ██████╗  ██████╗ 
+                                ████╗ ████║██╔══██╗████╗  ██║     ██║██╔══██╗██╔══██╗██╔═══██╗
+                                ██╔████╔██║███████║██╔██╗ ██║     ██║███████║██████╔╝██║   ██║
+                                ██║╚██╔╝██║██╔══██║██║╚██╗██║██   ██║██╔══██║██╔══██╗██║   ██║
+                                ██║ ╚═╝ ██║██║  ██║██║ ╚████║╚█████╔╝██║  ██║██║  ██║╚██████╔╝
+                                ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ 
+                                                            
+                                            ${f1}Fetch:${f7} $(check_fetch)             ${f1}Editor:${f7} $(check_editor)
+                                            ${f1}DE:${f7} $(check_de)                ${f1}Term:${f7} $(check_term)
+                                            ${f1}Shell:${f7} $(check_shell)             ${f1}Dock:${f7} $(check_dock)
+                                            ${f1}Browser:${f7} $(check_browser)           ${f1}Distro:${f7} $(check_distro)
+                                            ${f1}WM:${f7} $(check_wm)                ${f1}Player:${f7} $(check_player)
 EOF
