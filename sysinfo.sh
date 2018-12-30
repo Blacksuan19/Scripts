@@ -19,7 +19,8 @@ ICONS=$(awk <~/.kde4/share/config/kdeglobals '/Theme/{print $1}' | sed 's/Theme=
 COLORS=$(awk <~/.kde4/share/config/kdeglobals '/ColorScheme/{print $1}' | sed 's/ColorScheme=//g') # get plasma color scheme
 FONT=$(awk <~/.kde4/share/config/kdeglobals '/font/{print $1}' | sed 's/,7.2,-1,5,57,0,0,0,0,0,Medium//g; s/font=//g') # get plasma fonts
 WIDGET=$(awk <~/.kde4/share/config/kdeglobals '/widgetStyle/{print $1}' | sed 's/widgetStyle=//g') # get plasma widgets
-TERM_FONT=$(awk <~/.local/share/konsole/Shell.profile '/Font=/{print $1}' | sed 's/,9,-1,5,50,0,0,0,0,0,Regular//g; s/Font=//g') #change profile name according to yours 
+TERM_FONT=$(awk <~/.local/share/konsole/Shell.profile '/Font=/{print $1}' | sed 's/,9,-1,5,50,0,0,0,0,0,Regular//g; s/Font=//g') #change profile name according to yours
+KV_THEME=$(awk <~/.config/Kvantum/kvantum.kvconfig '/theme/{print $1}' | sed 's/theme=//g')
 # get currently playing song (spotify and vlc only).
 if pgrep -x "spotify" > /dev/null
 then
@@ -62,6 +63,10 @@ clear # clear the screen first before processing output.
  echo -e "\\e[94m ${bold}  ---------------------"
  echo -e "\\e[94m   \\e[39m${GREY}DE:$normal Plasma $DE"
  echo -e "\\e[94m   \\e[39m${GREY}Widget Style:$normal $WIDGET" 
+ if [ $WIDGET = "kvantum" ] 
+ then 
+    echo -e "\\e[94m   \\e[39m${GREY}Theme:$normal $KV_THEME"
+ fi  
  echo -e "\\e[94m   \\e[39m${GREY}Font:$normal $FONT" 
  echo -e "\\e[94m   \\e[39m${GREY}Terminal Font:$normal $TERM_FONT"
  echo -e "\\e[94m   \\e[39m${GREY}Icons:$normal $ICONS"
