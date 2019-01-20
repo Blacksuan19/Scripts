@@ -51,7 +51,9 @@ then
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/title/ {print  $2}')
 else 
-	Playing=$(echo "No Supported Player Is Running")
+	PLAYER="None"
+   ARTIST="None"
+   SONG="None"
 fi
 fi
 
