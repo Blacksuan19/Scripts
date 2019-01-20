@@ -2,7 +2,7 @@
 # dark shell grave. 
 
 OS=$(hostnamectl | awk '{$1=$3="";sub(/^[ \t]+/, "")}NR==7' | sed 's/System:  //g') # get operating system
-DISTRO=$(lsb_release -sirc | awk '{print $3 " " $2}'  | sed 's/-rc//g') # get distro (this is for non lts )
+DISTRO=$(lsb_release -sirc | awk '{print $1 " " $2}'  | sed 's/Linux//g') # get distro (this is for non lts )
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}') # get kernel version
 MODEL=$(awk </sys/devices/virtual/dmi/id/board_name '{print $1}')  # get device model
 VENDOR=$(awk </sys/devices/virtual/dmi/id/board_vendor '{print $1}')  # get device vendor
