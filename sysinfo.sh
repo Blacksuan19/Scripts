@@ -17,7 +17,7 @@ SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" 
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use pacman then what??
 ICONS=$(awk <~/.kde4/share/config/kdeglobals '/Theme/{print $1}' | sed 's/Theme=//g; s/-icon-theme//g; s/[-]/ /g') # get plasma icons 
 COLORS=$(awk <~/.kde4/share/config/kdeglobals '/ColorScheme/{print $1}' | sed 's/ColorScheme=//g') # get plasma color scheme
-FONT=$(awk <~/.kde4/share/config/kdeglobals '/font/{print $1 " " $2 " " $3}' | sed 's/,7,-1,5,57,0,0,0,0,0,Medium//g; s/font=//g') # get plasma fonts
+FONT=$(awk <~/.kde4/share/config/kdeglobals '/font/{print $1 "" $2 "" $3}' | sed 's/,7,-1,5,57,0,0,0,0,0,Medium//g; s/font=//g') # get plasma fonts
 WIDGET=$(awk <~/.kde4/share/config/kdeglobals '/widgetStyle/{print $1}' | sed 's/widgetStyle=//g') # get plasma widgets
 TERM_FONT=$(awk <~/.local/share/konsole/Shell.profile '/Font=/{print $1 " "$2}' | sed 's/,10,-1,5,50,0,0,0,0,0,Regular//g; s/Font=//g') #change profile name according to yours
 KV_THEME=$(awk <~/.config/Kvantum/kvantum.kvconfig '/theme/{print $1}' | sed 's/theme=//g')
@@ -83,8 +83,7 @@ clear # clear the screen first before processing output.
  then 
    echo -e "\\e[94m   \\e[39m${GREY}Theme:$normal $KV_THEME"
  fi  
- echo -e "\\e[94m   \\e[39m${GREY}Font:$normal $FONT" 
- echo -e "\\e[94m   \\e[39m${GREY}Terminal Font:$normal $TERM_FONT"
+ echo -e "\\e[94m   \\e[39m${GREY}Fonts:$normal $FONT", "$TERM_FONT" 
  echo -e "\\e[94m   \\e[39m${GREY}Icons:$normal $ICONS"
  echo -e "\\e[94m   \\e[39m${GREY}Colors:$normal $COLORS"
  echo -e "\\e[94m   \\e[39m${GREY}Packages:$normal $Packages "
