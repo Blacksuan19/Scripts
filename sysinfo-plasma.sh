@@ -6,16 +6,21 @@ DISTRO=$(lsb_release -sirc | awk '{print $1 " " $2}'  | sed 's/Linux//g') # get 
 KERNEL=$(hostnamectl | awk -F- '/Kernel/{ OFS="-";NF--; print }'|awk '{print $3}') # get kernel version
 MODEL=$(awk </sys/devices/virtual/dmi/id/board_name '{print $1}')  # get device model
 VENDOR=$(awk </sys/devices/virtual/dmi/id/board_vendor '{print $1}')  # get device vendor
-WM="BSPWM" # i use bspwm, feel free to change this to whatever you using
+DE=$(plasmashell --version | awk '{print $2}') # i use kde plasma, feel free to change this according to your DE/WM. // slow
 CPU=$(awk < /proc/cpuinfo '/model name/{print $5}' | head -1) # get cpu model
 TEMP=$(awk </sys/class/hwmon/hwmon0/temp1_input '{print $1 / 1000}') # get cpu temp
 GPU=$(lspci | awk '/VGA/{print $11,$12,$13}' | tr -d '[]') # slow af
-ROOT=$(df -h | awk '/^\/dev\/sda2/ {print $4"B/"$2"B"}') # replace /dev/sda1 wwith your root disk name
+ROOT=$(df -h | awk '/^\/dev\/sda1/ {print $4"B/"$2"B"}') # replace /dev/sda1 wwith your root disk name
 MEMORY_TOTAL=$(awk </proc/meminfo '/MemTotal/{ print substr($2/1000/1000,1,4)}') # total memory
 MEMORY=$(awk </proc/meminfo '/MemAvailable/{ print substr($2/1000/1000,1,4)}') # free memory
 SHELL=$(zsh --version | awk '{sub(".", substr(toupper($i),1,1) , $i); print $1" "$2}') # i use zsh if you use another shell change this accordingly.
 Packages=$(pacman -Q | awk 'END {print NR}') # if you dont use pacman then what??
-FONT=$(awk <~/.config/termite/config '/font/{print $3}')
+ICONS=$(awk <~/.kde4/share/config/kdeglobals '/Theme/{print $1}' | sed 's/Theme=//g; s/-icon-theme//g; s/[-]/ /g') # get plasma icons 
+COLORS=$(awk <~/.kde4/share/config/kdeglobals '/ColorScheme/{print $1}' | sed 's/ColorScheme=//g') # get plasma color scheme
+FONT=$(awk <~/.kde4/share/config/kdeglobals '/font/{print $1 "" $2 "" $3}' | sed 's/,7,-1,5,57,0,0,0,0,0,Medium//g; s/font=//g') # get plasma fonts
+WIDGET=$(awk <~/.kde4/share/config/kdeglobals '/widgetStyle/{print $1}' | sed 's/widgetStyle=//g') # get plasma widgets
+TERM_FONT=$(awk <~/.local/share/konsole/Shell.profile '/Font=/{print $1 " "$2}' | sed 's/,10,-1,5,50,0,0,0,0,0,Regular//g; s/Font=//g') #change profile name according to yours
+KV_THEME=$(awk <~/.config/Kvantum/kvantum.kvconfig '/theme/{print $1}' | sed 's/theme=//g')
 # get currently playing song (spotify and vlc only).
 if pgrep -x "spotify" > /dev/null
 then
@@ -46,9 +51,9 @@ then
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/title/ {print  $2}')
 else 
-    PLAYER="None"
-    ARTIST="None"
-    SONG="None"
+	PLAYER="None"
+   ARTIST="None"
+   SONG="None"
 fi
 fi
 
@@ -72,8 +77,15 @@ clear # clear the screen first before processing output.
  echo -e "\\e[94m   \\e[39m${GREY}Memory:$normal "$MEMORY"G/"$MEMORY_TOTAL"G Free" 
  echo -e "\\e[94m   \\e[39m${GREY}Root(/):$normal "$ROOT" Free" 
  echo -e "\\e[94m ${bold}  ---------------------"
- echo -e "\\e[94m   \\e[39m${GREY}WM:$normal $WM"
- echo -e "\\e[94m   \\e[39m${GREY}Font:$normal $FONT" 
+ echo -e "\\e[94m   \\e[39m${GREY}DE:$normal Plasma $DE"
+ echo -e "\\e[94m   \\e[39m${GREY}Widget Style:$normal $WIDGET" 
+ if [ $WIDGET = "kvantum" ] 
+ then 
+   echo -e "\\e[94m   \\e[39m${GREY}Theme:$normal $KV_THEME"
+ fi  
+ echo -e "\\e[94m   \\e[39m${GREY}Fonts:$normal $FONT", "$TERM_FONT" 
+ echo -e "\\e[94m   \\e[39m${GREY}Icons:$normal $ICONS"
+ echo -e "\\e[94m   \\e[39m${GREY}Colors:$normal $COLORS"
  echo -e "\\e[94m   \\e[39m${GREY}Packages:$normal $Packages "
  echo -e "\\e[94m ${bold}  ---------------------"
  echo -e "\\e[94m   \\e[39m${GREY}Player:$normal $PLAYER"
