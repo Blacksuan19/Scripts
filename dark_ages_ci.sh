@@ -97,9 +97,19 @@ tg_sendinfo "<b>Dark Ages Kernel</b> new <b>Beta</b> build!
 	Date: <b>$(date)</b>"
 fi
 
-make O=out $CONFIG $THREAD
-make O=out $THREAD
+# building
+make O=out $CONFIG
 
+if [[ $BRANCH == "clang" ]]; then
+    make $THREAD O=out \
+                      ARCH=arm64 \
+                      CC=clang \
+                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CROSS_COMPILE=aarch64-elf-
+
+else
+    make O=out $THREAD
+fi
 
 BUILD_END=$(date +"%s")
 DIFF=$(($BUILD_END - $BUILD_START))
