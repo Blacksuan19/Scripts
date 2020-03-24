@@ -53,19 +53,13 @@ export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER="Blacksuan19"
 export KBUILD_BUILD_HOST="Dark-Castle"
-export CROSS_COMPILE="$PWD/toolchains/aarch64/bin/aarch64-elf-"
-export CROSS_COMPILE_ARM32="$PWD/toolchains/aarch32/bin/arm-eabi-"
-export CC=$PWD/toolchains/clang/bin/clang
-export KBUILD_COMPILER_STRING=$($CC --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+
 
 # Install build package
-
 sudo apt install bc
 
 # Clone toolchains
-git clone https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5657785.git toolchains/clang
-git clone https://github.com/kdrag0n/aarch64-elf-gcc toolchains/aarch64
-git clone https://github.com/arter97/arm-eabi-5.1.git toolchains/aarch32
+git clone https://github.com/kdrag0n/proton-clang.git --depth 1 toolchains/clang
 
 # Clone AnyKernel2
 git clone https://github.com/Blacksuan19/AnyKernel2 $PWD/Zipper
@@ -98,18 +92,14 @@ tg_sendinfo "<b>Dark Ages Kernel</b> new <b>Beta</b> build!
 fi
 
 # building
+export PATH="$HOME/toolchains/clang/bin:$PATH"
+
 make O=out $CONFIG
+make $THREAD O=out \
+                CC=clang \
+                CROSS_COMPILE=aarch64-linux-android- \
+                CROSS_COMPILE_ARM32=arm-linux-gnueabi
 
-if [[ $BRANCH == "clang" ]]; then
-    make $THREAD O=out \
-                      ARCH=arm64 \
-                      CC=clang \
-                      CLANG_TRIPLE=aarch64-linux-gnu- \
-                      CROSS_COMPILE=aarch64-elf-
-
-else
-    make O=out $THREAD
-fi
 
 BUILD_END=$(date +"%s")
 DIFF=$(($BUILD_END - $BUILD_START))
@@ -125,7 +115,7 @@ cp $KERN_IMG $ZIP_DIR/zImage
 NAME=Dark-Ages
 DATE=$(date "+%d%m%Y-%I%M")
 CODE=Décimo
-VERSION=4.9-$(awk '/SUBLEVEL/ {print $3}' /home/runner/android_kernel_dark_ages/Makefile | head -1 | sed 's/[^0-9]*//g')
+VERSION=4.9-$(awk '/SUBLEVEL/ {print $3}' ../Makefile | head -1 | sed 's/[^0-9]*//g')
 if [ $BRANCH == "darky" ]; then
 ZIP=${NAME}-${CODE}-${VERSION}-STABLE-${DATE}.zip
 make stable &>/dev/null
