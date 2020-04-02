@@ -8,6 +8,7 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT=$(git log --pretty=format:'"%h : %s"' -1)
 THREAD="-j16"
 DEVICE=$1
+[ -z "$DEVICE"] && DEVICE="vince" # if no device specified use vince
 
 if [[ "$DEVICE" == "vince" ]]; then
     CHAT_ID="-1001348786090"
