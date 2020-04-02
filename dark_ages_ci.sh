@@ -1,51 +1,129 @@
 #!/usr/bin/env bash
-# Copyright (C) 2018 Abubakar Yagoub (Blacksuan19)
+# Copyright (C) 2020 Abubakar Yagoub (Blacksuan19)
 
-
-BOT_API_KEY=
+BOT=$BOT_API_KEY
 KERN_IMG=$PWD/out/arch/arm64/boot/Image.gz-dtb
-ZIP_DIR=$PWD/Zipper
+ZIP_DIR=$HOME/Zipper
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-CONFIG=vince_defconfig
-THREAD="-j8"
+COMMIT=$(git log --pretty=format:'"%h : %s"' -1)
+THREAD="-j16"
+DEVICE=$1
 
-# Push kernel installer to channel
+if [[ "$DEVICE" == "vince" ]]; then
+    CHAT_ID="-1001348786090"
+    CONFIG=vince_defconfig
+elif [[ "$DEVICE" == "phoenix" ]]; then
+    CHAT_ID="" # TODO: make phoenix ci channel
+    CONFIG=phoenix_defconfig
+fi
 
-function push() {
+# upload to channel
+function tg_pushzip() {
 	JIP=$ZIP_DIR/$ZIP
 	MD5=$ZIP_DIR/$ZIP.sha1
-	curl -F document=@"$JIP"  "https://api.telegram.org/bot$BOT_API_KEY/sendDocument" \
-			-F chat_id="-1001348786090"
+	curl -F document=@"$JIP"  "https://api.telegram.org/bot$BOT/sendDocument" \
+			-F chat_id=$CHAT_ID
 
-	curl -F document=@"$MD5"  "https://api.telegram.org/bot$BOT_API_KEY/sendDocument" \
-			-F chat_id="-1001348786090"
+	curl -F document=@"$MD5"  "https://api.telegram.org/bot$BOT/sendDocument" \
+			-F chat_id=$CHAT_ID
 }
 
+# sed text message
 function tg_sendinfo() {
-	curl -s "https://api.telegram.org/bot$BOT_API_KEY/sendMessage" \
+	curl -s "https://api.telegram.org/bot$BOT/sendMessage" \
 		-d "parse_mode=html" \
 		-d text="${1}" \
 		-d chat_id="@da_ci" \
 		-d "disable_web_page_preview=true"
 }
 
-# Errored prober
-function finerr() {
-	tg_sendinfo "$(echo -e "Reep build Failed, Check log for more Info")"
-	exit 1
-}
-
 # Send sticker
 function tg_sendstick() {
-	curl -s -X POST "https://api.telegram.org/bot$BOT_API_KEY/sendSticker" \
+	curl -s -X POST "https://api.telegram.org/bot$BOT/sendSticker" \
 		-d sticker="CAADAQADRQADS3HZGKLNCg7b540CAg" \
 		-d chat_id="-1001348786090" >> /dev/null
 }
 
-# Fin prober
-
-function fin() {
+# finished without errors
+function tg_finished() {
 	tg_sendinfo "$(echo "Build Finished in $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.")"
+}
+
+# finished with error
+function tg_error() {
+	tg_sendinfo "Reep build Failed, Check log for more Info"
+	exit 1
+}
+
+# send build details
+function tg_sendbuildinfo() {
+    if [ $BRANCH == "darky" ]; then
+        tg_sendinfo "<b>New Kernel Build for $DEVICE</b>
+	    Started on: <b>$KBUILD_BUILD_HOST</b>
+	    Branch: <b>$BRANCH</b>
+        Commit <b>$COMMIT</b>
+	    Date: <b>$(date)</b>"
+
+    else
+        tg_sendinfo "<b>New Beta Kernel Build for $DEVICE</b>
+	    Started on: <b>$KBUILD_BUILD_HOST</b>
+	    Branch: <b>$BRANCH</b>
+        Commit <b>$COMMIT</b>
+	    Date: <b>$(date)</b>"
+
+fi
+}
+
+# build the kernel
+function build_kern() {
+    DATE=`date`
+    BUILD_START=$(date +"%s")
+
+    # building
+    make O=out $CONFIG $THREAD
+    # use gcc for vince and clang for phoenix
+    if [[ "$DEVICE" == "vince" ]]; then
+        make O=out $THREAD
+    else
+        export PATH="$HOME/toolchains/clang/bin:$PATH"
+        make $THREAD O=out \
+                    CC=clang \
+                    CROSS_COMPILE=aarch64-linux-android- \
+                    CROSS_COMPILE_ARM32=arm-linux-gnueabi
+    fi
+    
+    BUILD_END=$(date +"%s")
+    DIFF=$(($BUILD_END - $BUILD_START))
+    
+    if ! [ -a $KERN_IMG ]; then
+    	tg_error
+    	exit 1
+    fi
+}
+
+# make flashable zip
+function make_flashable() {
+    cd $ZIP_DIR
+    if [[ "$DEVICE" == "vince" ]]; then
+        git checkout vince
+    elif [[ "$DEVICE" == "phoenix" ]]; then
+        git checkout phoenix
+    fi
+    make clean &>/dev/null
+    cp $KERN_IMG $ZIP_DIR/zImage
+    if [ $BRANCH == "darky" ]; then
+        make stable &>/dev/null
+    elif [ $BRANCH == "darky-3.18" ]; then
+        git checkout 3.18
+        make stable &>/dev/null
+    else
+        make beta &>/dev/null
+    fi
+    echo "Flashable zip generated under $ZIP_DIR."
+    ZIP=$(ls | grep *.zip | grep -v *.sha1)
+    tg_pushzip
+    cd - 
+    tg_finished
 }
 
 # Export
@@ -53,84 +131,26 @@ export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER="Blacksuan19"
 export KBUILD_BUILD_HOST="Dark-Castle"
-
+export CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-"
+export CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-eabi-"
 
 # Install build package
 sudo apt install bc
 
 # Clone toolchains
-git clone https://github.com/kdrag0n/proton-clang.git --depth 1 toolchains/clang
+[ -d $HOME/toolchains/clang ] || git clone https://github.com/kdrag0n/proton-clang.git --depth 1 $HOME/toolchains/clang
+[ -d $HOME/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git $HOME/toolchains/aarch64
+[ -d $HOME/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git $HOME/toolchains/aarch32
 
-# Clone AnyKernel2
-git clone https://github.com/Blacksuan19/AnyKernel2 $PWD/Zipper
+# Clone AnyKernel3
+[ -d $HOME/Zipper ] || git clone https://github.com/Blacksuan19/AnyKernel3 $HOME/Zipper
+
+# send nudes to telegram
+tg_sendstick
+tg_sendbuildinfo
 
 # Build start
-DATE=`date`
-BUILD_START=$(date +"%s")
+build_kern
 
-tg_sendstick
-
-if [ $BRANCH == "darky" ]; then
-tg_sendinfo "<b>Dark Ages Kernel</b> new build!
-	Started on: <b>$KBUILD_BUILD_HOST</b>
-	Branch: <b>$BRANCH</b>
-	commit <b>$(git log --pretty=format:'"%h : %s"' -1)</b>
-	Date: <b>$(date)</b>"
-
-elif [ $BRANCH == "darky-3.18" ]; then
-tg_sendinfo "<b>Dark Ages Kernel 3.18 </b> new build!
-	Started on: <b>$KBUILD_BUILD_HOST</b>
-	Branch: <b>$BRANCH</b>
-	commit <b>$(git log --pretty=format:'"%h : %s"' -1)</b>
-	Date: <b>$(date)</b>"
-else
-tg_sendinfo "<b>Dark Ages Kernel</b> new <b>Beta</b> build!
-	Started on: <b>$KBUILD_BUILD_HOST</b>
-	Branch: <b>$BRANCH</b>
-	commit <b>$(git log --pretty=format:'"%h : %s"' -1)</b>
-	Date: <b>$(date)</b>"
-fi
-
-# building
-export PATH="$HOME/toolchains/clang/bin:$PATH"
-
-make O=out $CONFIG
-make $THREAD O=out \
-                CC=clang \
-                CROSS_COMPILE=aarch64-linux-android- \
-                CROSS_COMPILE_ARM32=arm-linux-gnueabi
-
-
-BUILD_END=$(date +"%s")
-DIFF=$(($BUILD_END - $BUILD_START))
-
-if ! [ -a $KERN_IMG ]; then
-	finerr
-	exit 1
-fi
-
-cd $ZIP_DIR
-make clean &>/dev/null
-cp $KERN_IMG $ZIP_DIR/zImage
-NAME=Dark-Ages
-DATE=$(date "+%d%m%Y-%I%M")
-CODE=Décimo
-VERSION=4.9-$(awk '/SUBLEVEL/ {print $3}' ../Makefile | head -1 | sed 's/[^0-9]*//g')
-if [ $BRANCH == "darky" ]; then
-ZIP=${NAME}-${CODE}-${VERSION}-STABLE-${DATE}.zip
-make stable &>/dev/null
-elif [ $BRANCH == "darky-3.18" ]; then
-git checkout 3.18
-CODE=Septimo
-VERSION=3.18
-ZIP=${NAME}-${CODE}-${VERSION}-STABLE-${DATE}.zip
-make stable &>/dev/null
-else
-ZIP=${NAME}-${CODE}-${VERSION}-BETA-${DATE}.zip
-make beta &>/dev/null
-fi
-echo "Flashable zip generated under $ZIP_DIR."
-push
-cd ..
-fin
-# Build end
+# make zip
+make_flashable
