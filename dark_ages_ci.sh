@@ -62,14 +62,14 @@ function tg_sendbuildinfo() {
         tg_sendinfo "<b>New Kernel Build for $DEVICE</b>
 	    Started on: <b>$KBUILD_BUILD_HOST</b>
 	    Branch: <b>$BRANCH</b>
-        Commit <b>$COMMIT</b>
+        Commit: <b>$COMMIT</b>
 	    Date: <b>$(date)</b>"
 
     else
         tg_sendinfo "<b>New Beta Kernel Build for $DEVICE</b>
 	    Started on: <b>$KBUILD_BUILD_HOST</b>
 	    Branch: <b>$BRANCH</b>
-        Commit <b>$COMMIT</b>
+        Commit: <b>$COMMIT</b>
 	    Date: <b>$(date)</b>"
 
 fi
@@ -79,6 +79,9 @@ fi
 function build_kern() {
     DATE=`date`
     BUILD_START=$(date +"%s")
+
+    # cleaup first
+    make clean && make mrproper
 
     # building
     make O=out $CONFIG $THREAD
