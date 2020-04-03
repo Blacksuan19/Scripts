@@ -137,7 +137,8 @@ export KBUILD_BUILD_USER="Blacksuan19"
 export KBUILD_BUILD_HOST="Dark-Castle"
 export CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-"
 export CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-eabi-"
-
+export LINUX_VERSION=$(awk '/SUBLEVEL/ {print $3}' Makefile \
+    | head -1 | sed 's/[^0-9]*//g')
 # Install build package
 sudo apt install bc
 
