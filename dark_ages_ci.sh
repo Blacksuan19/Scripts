@@ -8,7 +8,7 @@ BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT=$(git log --pretty=format:'"%h : %s"' -1)
 THREAD="-j16"
 DEVICE=$1
-[ -z "$DEVICE"] && DEVICE="vince" # if no device specified use vince
+[ -z "$DEVICE" ] && DEVICE="vince" # if no device specified use vince
 
 if [[ "$DEVICE" == "vince" ]]; then
     CHAT_ID="-1001348786090"
@@ -92,8 +92,8 @@ function build_kern() {
         export PATH="$HOME/toolchains/clang/bin:$PATH"
         make $THREAD O=out \
                     CC=clang \
-                    CROSS_COMPILE=aarch64-linux-android- \
-                    CROSS_COMPILE_ARM32=arm-linux-gnueabi
+                    CROSS_COMPILE=aarch64-linux-gnu- \
+                    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
     fi
     
     BUILD_END=$(date +"%s")
