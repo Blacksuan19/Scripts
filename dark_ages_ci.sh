@@ -13,9 +13,12 @@ DEVICE=$1
 if [[ "$DEVICE" == "vince" ]]; then
     CHAT_ID="-1001348786090"
     CONFIG=vince_defconfig
+    [ -d $HOME/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git $HOME/toolchains/aarch64
+    [ -d $HOME/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git $HOME/toolchains/aarch32
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="" # TODO: make phoenix ci channel
     CONFIG=phoenix_defconfig
+    [ -d $HOME/toolchains/clang ] || git clone https://github.com/kdrag0n/proton-clang.git --depth 1 $HOME/toolchains/clang
 fi
 
 # upload to channel
@@ -139,13 +142,6 @@ export CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-"
 export CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-eabi-"
 export LINUX_VERSION=$(awk '/SUBLEVEL/ {print $3}' Makefile \
     | head -1 | sed 's/[^0-9]*//g')
-# Install build package
-sudo apt install bc
-
-# Clone toolchains
-[ -d $HOME/toolchains/clang ] || git clone https://github.com/kdrag0n/proton-clang.git --depth 1 $HOME/toolchains/clang
-[ -d $HOME/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git $HOME/toolchains/aarch64
-[ -d $HOME/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git $HOME/toolchains/aarch32
 
 # Clone AnyKernel3
 [ -d $HOME/Zipper ] || git clone https://github.com/Blacksuan19/AnyKernel3 $HOME/Zipper
