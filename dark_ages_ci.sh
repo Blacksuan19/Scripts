@@ -16,7 +16,7 @@ if [[ "$DEVICE" == "vince" ]]; then
     [ -d $HOME/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git $HOME/toolchains/aarch64
     [ -d $HOME/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git $HOME/toolchains/aarch32
 elif [[ "$DEVICE" == "phoenix" ]]; then
-    CHAT_ID="" # TODO: make phoenix ci channel
+    CHAT_ID="-1001233365676"
     CONFIG=phoenix_defconfig
     [ -d $HOME/toolchains/clang ] || git clone https://github.com/kdrag0n/proton-clang.git --depth 1 $HOME/toolchains/clang
 fi
@@ -37,7 +37,7 @@ function tg_sendinfo() {
 	curl -s "https://api.telegram.org/bot$BOT/sendMessage" \
 		-d "parse_mode=html" \
 		-d text="${1}" \
-		-d chat_id="@da_ci" \
+		-d chat_id=$CHAT_ID \
 		-d "disable_web_page_preview=true"
 }
 
@@ -45,7 +45,7 @@ function tg_sendinfo() {
 function tg_sendstick() {
 	curl -s -X POST "https://api.telegram.org/bot$BOT/sendSticker" \
 		-d sticker="CAADAQADRQADS3HZGKLNCg7b540CAg" \
-		-d chat_id="-1001348786090" >> /dev/null
+		-d chat_id=$CHAT_ID >> /dev/null
 }
 
 # finished without errors
