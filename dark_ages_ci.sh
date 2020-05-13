@@ -61,13 +61,11 @@ function tg_error() {
 
 # send build details
 function tg_sendbuildinfo() {
-    if [ $BRANCH == "darky" ]; then
-        tg_sendinfo "<b>New Kernel Build for $DEVICE</b>
-	    <b>Started on:</b> $KBUILD_BUILD_HOST
-	    <b>Branch:</b> $BRANCH
-     <b>Commit:</b> $COMMIT
-	    <b>Date:</b> $(date)"
-    fi
+    tg_sendinfo "<b>New Kernel Build for $DEVICE</b>
+    <b>Started on:</b> $KBUILD_BUILD_HOST
+    <b>Branch:</b> $BRANCH
+    <b>Commit:</b> $COMMIT
+    <b>Date:</b> $(date)"
 }
 
 # build the kernel
@@ -83,7 +81,7 @@ function build_kern() {
     # use gcc for vince and clang for phoenix
     if [[ "$DEVICE" == "vince" ]]; then
         make O=out $THREAD \
-                    CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-"
+                    CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-" \
                     CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-eabi-"
     else
         export PATH="$HOME/toolchains/clang/bin:$PATH"
