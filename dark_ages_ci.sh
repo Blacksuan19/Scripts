@@ -63,19 +63,11 @@ function tg_error() {
 function tg_sendbuildinfo() {
     if [ $BRANCH == "darky" ]; then
         tg_sendinfo "<b>New Kernel Build for $DEVICE</b>
-	    Started on: <b>$KBUILD_BUILD_HOST</b>
-	    Branch: <b>$BRANCH</b>
-        Commit: <b>$COMMIT</b>
-	    Date: <b>$(date)</b>"
-
-    else
-        tg_sendinfo "<b>New Beta Kernel Build for $DEVICE</b>
-	    Started on: <b>$KBUILD_BUILD_HOST</b>
-	    Branch: <b>$BRANCH</b>
-        Commit: <b>$COMMIT</b>
-	    Date: <b>$(date)</b>"
-
-fi
+	    <b>Started on:</b> $KBUILD_BUILD_HOST
+	    <b>Branch:</b> $BRANCH
+     <b>Commit:</b> $COMMIT
+	    <b>Date:</b> $(date)"
+    fi
 }
 
 # build the kernel
