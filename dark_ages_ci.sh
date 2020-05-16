@@ -5,7 +5,7 @@ BOT=$BOT_API_KEY
 KERN_IMG=$PWD/out/arch/arm64/boot/Image.gz-dtb
 ZIP_DIR=$HOME/Zipper
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-COMMIT=$(git log --pretty=format:'"%h : %s"' -1 | sed -e 's|["'\'']||g')
+COMMIT=$(git log --pretty=format:'%s' -1)
 THREAD=-j$(nproc --all)
 DEVICE=$1
 [ -z "$DEVICE" ] && DEVICE="vince" # if no device specified use vince
