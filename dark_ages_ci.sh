@@ -65,7 +65,7 @@ function tg_sendbuildinfo() {
     <b>Started on:</b> $KBUILD_BUILD_HOST
     <b>Branch:</b> $BRANCH
     <b>Commit:</b> $COMMIT
-    <b>Date:</b> $(date)"
+    <b>Date:</b> $(date +%A\ %B\ %d\ %Y\ %H:%M:%S)"
 }
 
 # build the kernel
