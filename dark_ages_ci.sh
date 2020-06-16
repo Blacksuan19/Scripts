@@ -24,12 +24,8 @@ fi
 # upload to channel
 function tg_pushzip() {
 	JIP=$ZIP_DIR/$ZIP
-	MD5=$ZIP_DIR/$ZIP.sha1
 	curl -F document=@"$JIP"  "https://api.telegram.org/bot$BOT/sendDocument" \
-			-F chat_id=$CHAT_ID
-
-	curl -F document=@"$MD5"  "https://api.telegram.org/bot$BOT/sendDocument" \
-			-F chat_id=$CHAT_ID
+        -F chat_id=$CHAT_ID -F caption="MD5: $(md5sum $ZIP_DIR/$ZIP | awk '{print $1}')"
 }
 
 # sed text message
