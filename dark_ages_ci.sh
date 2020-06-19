@@ -127,12 +127,12 @@ function make_flashable() {
 function generate_changelog() {
     # install drone CI
     curl -L https://github.com/drone/drone-cli/releases/latest/download/drone_linux_amd64.tar.gz | tar zx
-    sudo mv drone /usr/local/bin
+    mv drone ~/.local/bin
 
     # some magic
-    current_build=$(drone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==1{print $2; exit}')
-    last_build=$(drone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==2{print $2; exit}')
-    log=$(git log --pretty=format:'%s' last_build..current_build)
+    current_build=$(~/.local/bin/ndrone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==1{print $2; exit}')
+    last_build=$(~/.local/bin/drone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==2{print $2; exit}')
+    log=$(git log --pretty=format:'%s' $last_build..$current_build)
     export CHANAGE_URL=https://api.cl1p.net/"$DEVICE"_changelog_$(date +"%s")
     curl -H "Content-Type: text/html; charset=UTF-8" -X POST --data "$log" $CHANAGE_URL
 }
