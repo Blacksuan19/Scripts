@@ -133,6 +133,9 @@ function generate_changelog() {
     current_build=$(~/.local/bin/ndrone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==1{print $2; exit}')
     last_build=$(~/.local/bin/drone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==2{print $2; exit}')
     log=$(git log --pretty=format:'%s' $last_build..$current_build)
+    if [[ -z $log ]]; then
+        log="No new commits since last build!"
+    fi
     export CHANAGE_URL=https://api.cl1p.net/"$DEVICE"_changelog_$(date +"%s")
     curl -H "Content-Type: text/html; charset=UTF-8" -X POST --data "$log" $CHANAGE_URL
 }
