@@ -137,7 +137,7 @@ function generate_changelog() {
     if [[ -z $log ]]; then
         log="No new commits since last build!"
     fi
-    export CHANGE_URL=$(echo $log | nc termbin.com 9999)
+    export CHANGE_URL=$(echo $log | curl -F 'clbin=<-' https://clbin.com)
 }
 
 # Export
