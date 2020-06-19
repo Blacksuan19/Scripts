@@ -137,8 +137,7 @@ function generate_changelog() {
     if [[ -z $log ]]; then
         log="No new commits since last build!"
     fi
-    export CHANGE_URL=https://api.cl1p.net/"$DEVICE"_changelog_$(date +"%s")
-    curl -H "Content-Type: text/html; charset=UTF-8" -X POST --data "$log" $CHANGE_URL
+    export CHANGE_URL=$(echo $log | nc termbin.com 9999)
 }
 
 # Export
