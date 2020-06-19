@@ -62,7 +62,7 @@ function tg_sendbuildinfo() {
     tg_sendinfo "<b>New Kernel Build for $DEVICE</b>
     <b>Started on:</b> $KBUILD_BUILD_HOST
     <b>Branch:</b> $BRANCH
-    <b>Changelog:</b> <a href="$CHANGE_URL">Click Here</a>
+    <b>Changelog:</b> <a href='$CHANGE_URL'>Click Here</a>
     <b>Last Commit:</b> $COMMIT
     <b>Date:</b> $(date +%A\ %B\ %d\ %Y\ %H:%M:%S)"
 }
