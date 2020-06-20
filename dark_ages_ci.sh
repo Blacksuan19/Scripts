@@ -135,7 +135,7 @@ function generate_changelog() {
     last_build=$(drone build ls Blacksuan19/kernel_dark_ages_$DEVICE | awk '/Commit/{i++}i==2{print $2; exit}')
     log=$(git log --pretty=format:'%s' $last_build".."$current_build)
     if [[ -z $log ]]; then
-        log="No new commits since last build!"
+        log=$(git log --pretty=format:'%s' $current_build)
     fi
     export CHANGE_URL=$(echo $log | curl -F 'clbin=<-' https://clbin.com)
 }
