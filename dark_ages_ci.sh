@@ -5,7 +5,6 @@ BOT=$BOT_API_KEY
 KERN_IMG=$PWD/out/arch/arm64/boot/Image.gz-dtb
 ZIP_DIR=$HOME/Zipper
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-COMMIT=$(git log --pretty=format:'%s' -1)
 THREAD=-j$(nproc --all)
 DEVICE=$1
 [ -z "$DEVICE" ] && DEVICE="vince" # if no device specified use vince
@@ -63,7 +62,6 @@ function tg_sendbuildinfo() {
     <b>Started on:</b> $KBUILD_BUILD_HOST
     <b>Branch:</b> $BRANCH
     <b>Changelog:</b> <a href='$CHANGE_URL'>Click Here</a>
-    <b>Last Commit:</b> $COMMIT
     <b>Date:</b> $(date +%A\ %B\ %d\ %Y\ %H:%M:%S)"
 }
 
