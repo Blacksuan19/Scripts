@@ -126,7 +126,7 @@ function make_flashable() {
 
 function generate_changelog() {
     # install drone CI
-    wget https://github.com/drone/drone-cli/releases/download/v1.2.1/drone_linux_amd64.tar.gz
+    wget --no-check-certificate https://github.com/drone/drone-cli/releases/download/v1.2.1/drone_linux_amd64.tar.gz
     tar -xzf drone_linux_amd64.tar.gz
     mv drone /bin
 
