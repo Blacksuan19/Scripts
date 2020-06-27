@@ -109,14 +109,11 @@ function make_flashable() {
     cp $KERN_IMG $ZIP_DIR/zImage
     if [ $BRANCH == "darky" ]; then
         make stable &>/dev/null
-    elif [ $BRANCH == "darky-3.18" ]; then
-        git checkout 3.18
-        make stable &>/dev/null
     else
         make beta &>/dev/null
     fi
     echo "Flashable zip generated under $ZIP_DIR."
-    ZIP=$(ls | grep *.zip | grep -v *.sha1)
+    ZIP=$(ls | grep *.zip)
     tg_pushzip
     cd - 
     tg_finished
