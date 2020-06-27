@@ -132,7 +132,7 @@ function generate_changelog() {
     if [[ -z $log ]]; then
         log=$(git log --pretty=format:'- %s' $current_build)
     fi
-    export CHANGE_URL=$(printf "$log" | curl -F 'clbin=<-' https://clbin.com)
+    export CHANGE_URL=$(echo "$log" | curl -F 'clbin=<-' https://clbin.com)
 }
 
 # Export
