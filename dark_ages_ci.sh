@@ -17,7 +17,6 @@ if [[ "$DEVICE" == "vince" ]]; then
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
     CONFIG=phoenix_defconfig
-    [ -d $HOME/toolchains/clang ] || git clone https://github.com/kdrag0n/proton-clang.git --depth 1 $HOME/toolchains/clang
 fi
 
 # upload to channel
@@ -81,7 +80,6 @@ function build_kern() {
                     CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-" \
                     CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-eabi-"
     else
-        export PATH="$HOME/toolchains/clang/bin:$PATH"
         make $THREAD O=out \
                     CC=clang \
                     CROSS_COMPILE=aarch64-linux-gnu- \
