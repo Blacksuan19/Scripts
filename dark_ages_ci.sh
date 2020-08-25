@@ -85,10 +85,10 @@ function build_kern() {
                     CROSS_COMPILE=aarch64-linux-gnu- \
                     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
     fi
-    
+
     BUILD_END=$(date +"%s")
     DIFF=$(($BUILD_END - $BUILD_START))
-    
+
     if ! [ -a $KERN_IMG ]; then
     	tg_error
     	exit 1
@@ -113,7 +113,7 @@ function make_flashable() {
     echo "Flashable zip generated under $ZIP_DIR."
     ZIP=$(ls | grep *.zip)
     tg_pushzip
-    cd - 
+    cd -
     tg_finished
 }
 
