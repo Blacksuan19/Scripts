@@ -16,7 +16,7 @@ if [[ "$DEVICE" == "vince" ]]; then
     [ -d $HOME/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git $HOME/toolchains/aarch32
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
-    CONFIG=phoenix_defconfig
+    CONFIG=vendor/lineage_phoenix_defconfig
 fi
 
 # upload to channel
