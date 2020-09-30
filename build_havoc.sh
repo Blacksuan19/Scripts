@@ -12,7 +12,7 @@ clone "Blacksuan19/android_device_xiaomi_sm6150-common" "device/xiaomi/sm6150-co
 clone "Blacksuan19/vendor_xiaomi" "vendor/xiaomi"
 
 # kernel
-clone "crdroidandroid/android_kernel_xiaomi_sm6150" "kernel/xiaomi/sm6150"
+clone "Blacksuan19/kernel_dark_ages_phoenix" "kernel/xiaomi/sm6150"  "-b darky-beta"
 
 # xiaomi hardware
 clone "crdroidandroid/android_hardware_xiaomi" "hardware/xiaomi"
