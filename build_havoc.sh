@@ -12,14 +12,14 @@ clone "Blacksuan19/android_device_xiaomi_sm6150-common" "device/xiaomi/sm6150-co
 clone "Blacksuan19/vendor_xiaomi" "vendor/xiaomi"
 
 # kernel
-clone "Blacksuan19/kernel_dark_ages_phoenix" "kernel/xiaomi/sm6150"  "-b darky-beta"
+clone "Blacksuan19/kernel_dark_ages_phoenix" "kernel/xiaomi/sm6150"
 
 # xiaomi hardware
 clone "crdroidandroid/android_hardware_xiaomi" "hardware/xiaomi"
 rm -rf hardware/xiaomi/org.ifaa.android.manager
 
 # ANX camera
-clone "sarveshrulz/android_vendor_aeonax_anxcamera" "vendor/aeonax/ANXCamera" "-b mmaster"
+clone "sarveshrulz/android_vendor_aeonax_anxcamera" "vendor/aeonax/ANXCamera"
 
 # face unlock
 clone "Havoc-OS/android_external_motorola_faceunlock" "external/motorola/faceunlock"
