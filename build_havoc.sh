@@ -37,6 +37,9 @@ cd packages/apps/Settings
 git fetch https://github.com/Blacksuan19/android_packages_apps_Settings
 git cherry-pick 1a4f15ea4f4ceef8a44af99282589e12b8576705
 
+# always build with gapps first
+export WITH_GAPPS=true && export TARGET_GAPPS_ARCH=arm64
+
 # build rom
 cd -
 . build/envsetup.sh
