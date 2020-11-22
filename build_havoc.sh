@@ -6,6 +6,13 @@ function clone(){
     git clone https://github.com/$1 $2 $3
 }
 
+# initiate the manifest
+repo init -u https://github.com/Havoc-OS/android_manifest.git -b ten
+
+# sync
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+
+
 # device trees and vendor
 clone "Blacksuan19/android_device_xiaomi_phoenix" "device/xiaomi/phoenix"
 clone "Blacksuan19/android_device_xiaomi_sm6150-common" "device/xiaomi/sm6150-common"
