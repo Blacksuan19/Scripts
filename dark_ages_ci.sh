@@ -19,7 +19,7 @@ elif [[ "$DEVICE" == "phoenix" ]]; then
     CONFIG=vendor/lineage_phoenix_defconfig
     git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 $HOME/toolchains/aarch64
     git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 $HOME/toolchains/aarch32
-    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r399163b.tar.gz
+    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r407598b.tar.gz
     mv *.tar.gz $HOME/toolchains
     mkdir $HOME/toolchains/clang
     tar xzf $HOME/toolchains/*.tar.gz -C $HOME/toolchains/clang
