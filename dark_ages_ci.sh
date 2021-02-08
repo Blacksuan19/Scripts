@@ -17,12 +17,12 @@ if [[ "$DEVICE" == "vince" ]]; then
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
     CONFIG=vendor/lineage_phoenix_defconfig
-    git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 $HOME/toolchains/aarch64
-    git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 $HOME/toolchains/aarch32
-    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r407598b.tar.gz
-    mv *.tar.gz $HOME/toolchains
-    mkdir $HOME/toolchains/clang
-    tar xzf $HOME/toolchains/*.tar.gz -C $HOME/toolchains/clang
+    # git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 $HOME/toolchains/aarch64
+    # git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 $HOME/toolchains/aarch32
+    # wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r407598b.tar.gz
+    # mv *.tar.gz $HOME/toolchains
+    # mkdir $HOME/toolchains/clang
+    # tar xzf $HOME/toolchains/*.tar.gz -C $HOME/toolchains/clang
 fi
 
 # upload to channel
@@ -86,12 +86,14 @@ function build_kern() {
                     CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-elf-" \
                     CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-eabi-"
     else
-        export PATH="$HOME/toolchains/clang/bin:$PATH"
+        # export PATH="$HOME/toolchains/clang/bin:$PATH"
         make $THREAD O=out \
                     CC=clang \
-                    CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-linux-android-" \
-                    CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-linux-androideabi-" \
-                    CLANG_TRIPLE=aarch64-linux-gnu-
+                    CROSS_COMPILE=aarch64-linux-gnu- \
+                    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+                    # CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-linux-android-" \
+                    # CROSS_COMPILE_ARM32="$HOME/toolchains/aarch32/bin/arm-linux-androideabi-" \
+                    # CLANG_TRIPLE=aarch64-linux-gnu-
     fi
 
     BUILD_END=$(date +"%s")
