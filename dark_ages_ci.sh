@@ -89,6 +89,7 @@ function build_kern() {
         # export PATH="$HOME/toolchains/clang/bin:$PATH"
         make $THREAD O=out \
                     CC=clang \
+                    LD=ld.lld \
                     CROSS_COMPILE=aarch64-linux-gnu- \
                     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
                     # CROSS_COMPILE="$HOME/toolchains/aarch64/bin/aarch64-linux-android-" \
