@@ -22,8 +22,7 @@ clone "Blacksuan19/vendor_xiaomi" "vendor/xiaomi"
 clone "crdroidandroid/android_kernel_xiaomi_sm6150" "kernel/xiaomi/sm6150"
 
 # xiaomi hardware
-clone "crdroidandroid/android_hardware_xiaomi" "hardware/xiaomi"
-rm -rf hardware/xiaomi/org.ifaa.android.manager
+clone "lineageos/android_hardware_xiaomi" "hardware/xiaomi"
 
 # ANX camera
 clone "sarveshrulz/android_vendor_aeonax_anxcamera" "vendor/aeonax/ANXCamera"
