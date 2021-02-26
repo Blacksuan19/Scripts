@@ -7,7 +7,7 @@ function clone(){
 }
 
 # initiate the manifest
-repo init -u https://github.com/Havoc-OS/android_manifest.git -b ten
+repo init -u https://github.com/Havoc-OS/android_manifest.git -b eleven
 
 # sync
 repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
