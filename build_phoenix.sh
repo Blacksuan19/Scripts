@@ -28,6 +28,5 @@ bash external/motorola/faceunlock/regenerate/regenerate.sh
 export WITH_GAPPS=true && export TARGET_GAPPS_ARCH=arm64
 
 # build rom
-cd -
 . build/envsetup.sh
 brunch phoenix
