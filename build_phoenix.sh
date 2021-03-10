@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
 
-# clone device trees and needed things to build havoc
+# clone device trees and needed things to build
 
 function clone(){
     git clone https://github.com/$1 $2 $3
 }
-
-# initiate the manifest
-repo init -u https://github.com/Havoc-OS/android_manifest.git -b eleven
-
-# sync
-repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
-
 
 # device trees and vendor
 clone "Blacksuan19/android_device_xiaomi_phoenix" "device/xiaomi/phoenix"
@@ -22,7 +15,7 @@ clone "Blacksuan19/vendor_xiaomi" "vendor/xiaomi"
 clone "crdroidandroid/android_kernel_xiaomi_sm6150" "kernel/xiaomi/sm6150"
 
 # xiaomi hardware
-clone "lineageos/android_hardware_xiaomi" "hardware/xiaomi"
+clone "Blacksuan19/android_hardware_xiaomi" "hardware/xiaomi"
 
 # ANX camera
 clone "sarveshrulz/android_vendor_aeonax_anxcamera" "vendor/aeonax/ANXCamera"
