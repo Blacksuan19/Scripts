@@ -3,7 +3,7 @@
 
 BOT=$BOT_API_KEY
 KERN_IMG=$PWD/out/arch/arm64/boot/Image.gz-dtb
-ZIP_DIR=Zipper
+ZIP_DIR=/drone/src/Zipper
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 THREAD=-j$(nproc --all)
 DEVICE=$1
@@ -12,9 +12,10 @@ DEVICE=$1
 if [[ "$DEVICE" == "vince" ]]; then
     CHAT_ID="-1001348786090"
     CONFIG=vince_defconfig
-    [ -d toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git toolchains/aarch64
-    [ -d toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git toolchains/aarch32
-    ls toolchains/aarch32/bin
+    [ -d /drone/src/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git /drone/src/toolchains/aarch64
+    [ -d /drone/src/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git /drone/src/toolchains/aarch32
+    ls -al /drone/src/toolchains/aarch32/bin
+    ls -al /drone/src/toolchains/aarch64/bin
     pwd
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
@@ -87,8 +88,8 @@ function build_kern() {
     if [[ "$DEVICE" == "vince" ]]; then
         pwd
         make O=out $THREAD \
-                    CROSS_COMPILE="toolchains/aarch64/bin/aarch64-elf-" \
-                    CROSS_COMPILE_ARM32="toolchains/aarch32/bin/arm-eabi-"
+                    CROSS_COMPILE="/drone/src/toolchains/aarch64/bin/aarch64-elf-" \
+                    CROSS_COMPILE_ARM32="/drone/src/toolchains/aarch32/bin/arm-eabi-"
     else
         # export PATH="/root/toolchains/clang/bin:$PATH"
         make $THREAD O=out \
@@ -157,7 +158,7 @@ export LINUX_VERSION=$(awk '/SUBLEVEL/ {print $3}' Makefile \
     | head -1 | sed 's/[^0-9]*//g')
 
 # Clone AnyKernel3
-[ -d Zipper ] || git clone https://github.com/Blacksuan19/AnyKernel3 Zipper
+[ -d /drone/src/Zipper ] || git clone https://github.com/Blacksuan19/AnyKernel3 /drone/src/Zipper
 
 # send nudes to telegram
 tg_sendstick
