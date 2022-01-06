@@ -14,6 +14,7 @@ if [[ "$DEVICE" == "vince" ]]; then
     CONFIG=vince_defconfig
     [ -d /root/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git /root/toolchains/aarch64
     [ -d /root/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git /root/toolchains/aarch32
+    ls /root/toolchains/aarch32/bin
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
     CONFIG=vendor/lineage_phoenix_defconfig
