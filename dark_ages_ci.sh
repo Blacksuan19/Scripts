@@ -15,6 +15,7 @@ if [[ "$DEVICE" == "vince" ]]; then
     [ -d toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git toolchains/aarch64
     [ -d toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git toolchains/aarch32
     ls toolchains/aarch32/bin
+    pwd
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
     CONFIG=vendor/lineage_phoenix_defconfig
@@ -76,6 +77,7 @@ function build_kern() {
     DATE=`date`
     BUILD_START=$(date +"%s")
 
+    pwd
     # cleaup first
     make clean && make mrproper
 
@@ -83,6 +85,7 @@ function build_kern() {
     make O=out $CONFIG $THREAD
     # use gcc for vince and clang for phoenix
     if [[ "$DEVICE" == "vince" ]]; then
+        pwd
         make O=out $THREAD \
                     CROSS_COMPILE="toolchains/aarch64/bin/aarch64-elf-" \
                     CROSS_COMPILE_ARM32="toolchains/aarch32/bin/arm-eabi-"
