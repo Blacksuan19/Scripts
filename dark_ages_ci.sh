@@ -3,7 +3,7 @@
 
 BOT=$BOT_API_KEY
 KERN_IMG=$PWD/out/arch/arm64/boot/Image.gz-dtb
-ZIP_DIR=/root/Zipper
+ZIP_DIR=Zipper
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 THREAD=-j$(nproc --all)
 DEVICE=$1
@@ -12,18 +12,18 @@ DEVICE=$1
 if [[ "$DEVICE" == "vince" ]]; then
     CHAT_ID="-1001348786090"
     CONFIG=vince_defconfig
-    [ -d /root/toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git /root/toolchains/aarch64
-    [ -d /root/toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git /root/toolchains/aarch32
-    ls /root/toolchains/aarch32/bin
+    [ -d toolchains/aarch64 ] || git clone https://github.com/kdrag0n/aarch64-elf-gcc.git toolchains/aarch64
+    [ -d toolchains/aarch32 ] || git clone https://github.com/kdrag0n/arm-eabi-gcc.git toolchains/aarch32
+    ls toolchains/aarch32/bin
 elif [[ "$DEVICE" == "phoenix" ]]; then
     CHAT_ID="-1001233365676"
     CONFIG=vendor/lineage_phoenix_defconfig
-    # git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 /root/toolchains/aarch64
-    # git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 /root/toolchains/aarch32
+    # git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 toolchains/aarch64
+    # git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 toolchains/aarch32
     # wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r407598b.tar.gz
-    # mv *.tar.gz /root/toolchains
-    # mkdir /root/toolchains/clang
-    # tar xzf /root/toolchains/*.tar.gz -C /root/toolchains/clang
+    # mv *.tar.gz toolchains
+    # mkdir toolchains/clang
+    # tar xzf toolchains/*.tar.gz -C toolchains/clang
 fi
 
 # upload to channel
@@ -84,8 +84,8 @@ function build_kern() {
     # use gcc for vince and clang for phoenix
     if [[ "$DEVICE" == "vince" ]]; then
         make O=out $THREAD \
-                    CROSS_COMPILE="/root/toolchains/aarch64/bin/aarch64-elf-" \
-                    CROSS_COMPILE_ARM32="/root/toolchains/aarch32/bin/arm-eabi-"
+                    CROSS_COMPILE="toolchains/aarch64/bin/aarch64-elf-" \
+                    CROSS_COMPILE_ARM32="toolchains/aarch32/bin/arm-eabi-"
     else
         # export PATH="/root/toolchains/clang/bin:$PATH"
         make $THREAD O=out \
@@ -154,7 +154,7 @@ export LINUX_VERSION=$(awk '/SUBLEVEL/ {print $3}' Makefile \
     | head -1 | sed 's/[^0-9]*//g')
 
 # Clone AnyKernel3
-[ -d /root/Zipper ] || git clone https://github.com/Blacksuan19/AnyKernel3 /root/Zipper
+[ -d Zipper ] || git clone https://github.com/Blacksuan19/AnyKernel3 Zipper
 
 # send nudes to telegram
 tg_sendstick
